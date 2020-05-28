@@ -1,0 +1,85 @@
+// Adding a plugin dependency
+// Here we are going to list the dependencies that are not related to the project code but to the build script itself
+buildscript {
+    dependencies {
+        classpath files('show-date/build/libs/show-date-1.0-SNAPSHOT.jar')
+    }
+}
+
+// Accept license agreement because we are using a cloud service.
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+// run the cloud scan with gradle build --scan
+
+group 'info.garagesalesapp'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+// add source code declaration
+/*sourceSets {
+    main(({
+        java.srcDirs = ['src']
+    } as String))
+}*/
+
+// add repository declaration
+repositories {
+    mavenCentral()
+}
+
+// add external library dependency
+// run it with gradle dependencies to see al the dependencies of the project
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation project(':json-display')
+}
+
+// To see an html dependencies report - run it with gradle htmlDependencyReport
+apply plugin: 'project-report'
+
+// creating custom task
+/*task showDate {
+    dependsOn('build') // this forces the build task be executed first.
+    group('my tasks') // assigning this task into a custom group.
+    description('Show current day.')
+    doLast {
+        println ''
+        println 'Current Date: ' + new Date()
+        println ''
+    }
+}*/
+// run gradle tasks --all. to list all tasks in this project.
+
+// Defining a class to create a task
+// creating custom class declaration by extending DefaultTask
+/*class ShowDate extends DefaultTask {
+    String dateMessage = "Date is: "
+
+    @TaskAction
+    void showDate() {
+        println dateMessage + new Date()
+    }
+}*/
+
+// Instantiation of the class above and assigning to a local task name showTime
+// task showDate(type: ShowDate)
+
+// We are extending ShowTime further using groovy and we are overridden the date message.
+/*task customShowDate(type: ShowDate){
+    dateMessage = "Custom time is: "
+}*/
+
+// applying the custom plugin into the project
+apply plugin: 'show-date-plugin'
+
+// rename the build directory
+// buildDir("myBuild")
+
+// ./gradlew build --profile -> value information about the build

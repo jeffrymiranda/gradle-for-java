@@ -1,0 +1,9 @@
+//  Adding the plugin for the build scan
+plugins {
+    id "com.gradle.enterprise" version "3.3.1"
+}
+
+// run gradle -q projects to see all the projects
+rootProject.name = 'java-project'
+include 'json-display'
+include 'show-date'
